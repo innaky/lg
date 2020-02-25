@@ -41,11 +41,16 @@ getSizeSum filepath = do
   return (sum filesizes)
 
 listGreater filepath = do
-  localFiles <- completePath filepath
-  everyFile <- forM localFiles $ \filename -> do
-    sumfile <- getSizeSum filename
-    return (filename, sumfile)
-  return everyFile
+  isDir <- doesDirectoryExist filepath
+  filesize0 <- getFileSize filepath
+  if isDir
+    then do
+    localFiles <- completePath filepath
+    everyFile <- forM localFiles $ \filename -> do
+      sumfile <- getSizeSum filename
+      return (filename, sumfile)
+    return everyFile
+    else return [(filepath, filesize0)]
 
 main = do
   (filenam:_) <- getArgs

@@ -1,4 +1,8 @@
 # Revision history for lg	
+
+## 0.1.2 -- 2020-02-25
+
+	* listGreater: Take a filepath, return the filename size (directory or file).
 	
 ## 0.1.1 -- 2020-02-25
 
