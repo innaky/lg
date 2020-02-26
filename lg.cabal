@@ -2,7 +2,7 @@
 -- see http://haskell.org/cabal/users-guide/
 
 name:                lg
-version:             0.1.0
+version:             0.2.2
 synopsis:            List greater files.
 -- description:
 homepage:            https://github.com/innaky/lg

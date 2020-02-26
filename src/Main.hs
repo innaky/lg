@@ -10,8 +10,8 @@ import Data.List (sortBy)
 import Data.Function (on)
 
 -- pure
-mySort :: Ord b => [(a, b)] -> [(a, b)]
-mySort = sortBy (flip compare `on` snd)
+mySort :: Ord a => [(a, b)] -> [(a, b)]
+mySort = sortBy (flip compare `on` fst)
 
 -- impure
 getFileSize :: FilePath -> IO FileOffset
@@ -48,7 +48,7 @@ getSizeSum filepath = do
   filesizes <- getSize filepath
   return (sum filesizes)
 
-listGreater :: FilePath -> IO [(FilePath, FileOffset)]
+listGreater :: FilePath -> IO [(FileOffset, FilePath)]
 listGreater filepath = do
   isDir <- doesDirectoryExist filepath
   filesize0 <- getFileSize filepath
@@ -57,12 +57,12 @@ listGreater filepath = do
     localFiles <- completePath filepath
     everyFile <- forM localFiles $ \filename -> do
       sumfile <- getSizeSum filename
-      return (filename, sumfile)
+      return (sumfile, filename)
     return (mySort everyFile)
-    else return [(filepath, filesize0)]
+    else return [(filesize0, filepath)]
 
 main :: IO ()
 main = do
   (filenam:_) <- getArgs
   listgreater <- listGreater filenam
-  print listgreater
+  mapM_ print listgreater 

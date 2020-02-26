@@ -1,5 +1,8 @@
 # Revision history for lg	
 
+## 0.2.2 -- 2020-02-25
+	* Main: Makeup for main function.
+	
 ## 0.2.1 -- 2020-02-25
 	
 	* First stable
