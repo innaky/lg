@@ -1,5 +1,8 @@
 # Revision history for lg	
 
+## 0.2.3 -- 2020-02-26
+	* getFileSize: More secure function, don't stop for broken symlinks, for default return size == 0.
+
 ## 0.2.2 -- 2020-02-25
 	* Main: Makeup for main function.
 	

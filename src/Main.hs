@@ -2,7 +2,7 @@ module Main where
 
 import System.Posix.Types (FileOffset)
 import System.Posix.Files (getFileStatus, fileSize)
-import System.Directory (doesDirectoryExist, listDirectory)
+import System.Directory (doesDirectoryExist, listDirectory, doesFileExist)
 import Control.Monad (forM)
 import System.FilePath.Posix ((</>))
 import System.Environment (getArgs)
@@ -16,8 +16,12 @@ mySort = sortBy (flip compare `on` fst)
 -- impure
 getFileSize :: FilePath -> IO FileOffset
 getFileSize filepath = do
-  status <- getFileStatus filepath
-  return (fileSize status)
+  fileexist <- doesFileExist filepath
+  if fileexist
+    then do
+    stat <- getFileStatus filepath
+    return (fileSize stat)
+    else return 0
 
 completePath :: FilePath -> IO [FilePath]
 completePath mainDir = do
