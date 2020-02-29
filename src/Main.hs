@@ -13,6 +13,24 @@ import Data.Function (on)
 mySort :: Ord a => [(a, b)] -> [(a, b)]
 mySort = sortBy (flip compare `on` fst)
 
+-- return the sizes in string format
+offsetToString :: [(FileOffset, FilePath)] -> [String]
+offsetToString [] = []
+offsetToString (x:xs) = lines (show (first_t x)) ++ offsetToString xs
+
+-- return the sizes of the duple
+first_t :: (FileOffset, FilePath) -> FileOffset
+first_t (a,_) = a
+
+mix :: [String] -> [String] -> [[String]]
+mix [] _ = []
+mix _ [] = []
+mix (x:xs) (y:ys) =  [x:y:[]] ++ mix xs ys
+
+twoInternalLst :: [[String]] -> [String]
+twoInternalLst [] = []
+twoInternalLst (x:xs) = [head x ++ " " ++  unwords (tail x)] ++ twoInternalLst xs
+
 -- impure
 getFileSize :: FilePath -> IO FileOffset
 getFileSize filepath = do
@@ -68,5 +86,10 @@ listGreater filepath = do
 main :: IO ()
 main = do
   (filenam:_) <- getArgs
-  listgreater <- listGreater filenam
-  mapM_ print listgreater 
+  tupleall <- listGreater filenam
+  let lstsizes = offsetToString tupleall
+      lstnames = snd $ unzip tupleall
+      lstall = mix lstsizes lstnames
+      lstinternal = twoInternalLst lstall
+  mapM_ print lstinternal
+

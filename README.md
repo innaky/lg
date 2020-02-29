@@ -9,16 +9,16 @@ Return a filename and the size:
 ## Usage
 
 ```bash
-lg /home/live/src/haskell-misc/
-(1837292,"/home/live/src/haskell-misc/learn-you-a-haskell")
-(73701,"/home/live/src/haskell-misc/.git")
-(1063,"/home/live/src/haskell-misc/LICENSE")
-(617,"/home/live/src/haskell-misc/README.md")
+> lg /home/live/src/haskell-misc/
+"76187 /home/live/src/haskell-misc/.git"
+"20779 /home/live/src/haskell-misc/learn-you-a-haskell"
+"1063 /home/live/src/haskell-misc/LICENSE"
+"617 /home/live/src/haskell-misc/README.md"
 
-lg /home/live/src/haskell-misc/README.md
-(617,"/home/live/src/haskell-misc/README.md")
+> lg /home/live/src/haskell-misc/README.md
+"617 /home/live/src/haskell-misc/README.md"
 
 lg /home/live/src/haskell-misc/ | head -n 2
-(1837292,"/home/live/src/haskell-misc/learn-you-a-haskell")
-(73701,"/home/live/src/haskell-misc/.git")
+"76187 /home/live/src/haskell-misc/.git"
+"20779 /home/live/src/haskell-misc/learn-you-a-haskell"
 ```

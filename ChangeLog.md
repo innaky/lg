@@ -1,4 +1,15 @@
-# Revision history for lg	
+# Revision history for lg
+
+## 0.2.4 -- 2020-02-29
+	* offsetToString This function transform the data type `FileOffset` in a string.
+	* first_t This function extract the first element of a tuple (FileOffset, FilePath)
+	* mix This function zip two lists, first element with the first, second with the second ...
+	each pair of elements inside a list, the elements are strings.
+	* twoInternalLst This function get a list of lists and return the head of sublist, a space and
+	the tail of the sublist, recursively.
+
+	This functions are necessary for transforming the data from [(FileOffset, FilePath)] to a list
+	with sublist of strings for easy output with mapM_. This functions are pure.
 
 ## 0.2.3 -- 2020-02-26
 	* getFileSize: More secure function, don't stop for broken symlinks, for default return size == 0.
