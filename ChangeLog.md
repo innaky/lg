@@ -1,5 +1,11 @@
 # Revision history for lg
 
+## 0.2.5 -- 2020-02-29
+	* ifDirAndSymbolicLink :: FilePath -> IO Bool
+	This function return `True` if is a `FilePath` directory and symbolic link.
+	The reason is for not follow the simbolic directory link
+	* Adding the `if` selection for files `ifDirAndSymbolicLink`
+
 ## 0.2.4 -- 2020-02-29
 	* offsetToString This function transform the data type `FileOffset` in a string.
 	* first_t This function extract the first element of a tuple (FileOffset, FilePath)

@@ -1,7 +1,7 @@
 module Main where
 
 import System.Posix.Types (FileOffset)
-import System.Posix.Files (getFileStatus, fileSize)
+import System.Posix.Files (getSymbolicLinkStatus, fileSize, isSymbolicLink)
 import System.Directory (doesDirectoryExist, listDirectory, doesFileExist)
 import Control.Monad (forM)
 import System.FilePath.Posix ((</>))
@@ -35,11 +35,26 @@ twoInternalLst (x:xs) = [head x ++ " " ++  unwords (tail x)] ++ twoInternalLst x
 getFileSize :: FilePath -> IO FileOffset
 getFileSize filepath = do
   fileexist <- doesFileExist filepath
+  isDir <- doesDirectoryExist filepath
   if fileexist
     then do
-    stat <- getFileStatus filepath
-    return (fileSize stat)
+    stat <- getSymbolicLinkStatus filepath
+    let isSymbLink = isSymbolicLink stat
+    if isSymbLink && isDir
+      then do
+      return 0
+      else return (fileSize stat)
     else return 0
+
+ifDirAndSymbolicLink :: FilePath -> IO Bool
+ifDirAndSymbolicLink filepath = do
+  isDir <- doesDirectoryExist filepath
+  stat <- getSymbolicLinkStatus filepath
+  let isSymbLink = isSymbolicLink stat
+  if isSymbLink && isDir
+    then do
+    return True
+    else return False
 
 completePath :: FilePath -> IO [FilePath]
 completePath mainDir = do
@@ -53,17 +68,21 @@ getSize :: FilePath -> IO [FileOffset]
 getSize filepath = do
   isDir <- doesDirectoryExist filepath
   filesize0 <- getFileSize filepath
-  if isDir
+  isDirAndSymbLk <- ifDirAndSymbolicLink filepath
+  if isDirAndSymbLk
     then do
-    localFiles <- completePath filepath
-    allLocalPaths <- forM localFiles $ \filename -> do
-      filesize1 <- getFileSize filename
-      isDirInside <- doesDirectoryExist filename
-      if isDirInside
-        then getSize filename
-        else return [filesize1]
-    return (concat allLocalPaths)
-    else return [filesize0]
+    return [0]
+    else (if isDir
+          then do
+             localFiles <- completePath filepath
+             allLocalPaths <- forM localFiles $ \filename -> do
+               filesize1 <- getFileSize filename
+               isDirInside <- doesDirectoryExist filename
+               if isDirInside
+                 then getSize filename
+                 else return [filesize1]
+             return (concat allLocalPaths)
+          else return [filesize0])
 
 getSizeSum :: FilePath -> IO FileOffset
 getSizeSum filepath = do
@@ -74,14 +93,18 @@ listGreater :: FilePath -> IO [(FileOffset, FilePath)]
 listGreater filepath = do
   isDir <- doesDirectoryExist filepath
   filesize0 <- getFileSize filepath
-  if isDir
+  isDirAndSymLk <- ifDirAndSymbolicLink filepath
+  if isDirAndSymLk
     then do
-    localFiles <- completePath filepath
-    everyFile <- forM localFiles $ \filename -> do
-      sumfile <- getSizeSum filename
-      return (sumfile, filename)
-    return (mySort everyFile)
-    else return [(filesize0, filepath)]
+    return [(0, filepath)]
+    else (if isDir
+          then do
+             localFiles <- completePath filepath
+             everyFile <- forM localFiles $ \filename -> do
+               sumfile <- getSizeSum filename
+               return (sumfile, filename)
+             return (mySort everyFile)
+          else return [(filesize0, filepath)])
 
 main :: IO ()
 main = do
