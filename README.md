@@ -1,4 +1,4 @@
-# lg
+# lg (Free Unix-like binary command)
 List greater files
 
 Return a filename and the size: 
