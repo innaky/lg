@@ -51,10 +51,7 @@ ifDirAndSymbolicLink filepath = do
   isDir <- doesDirectoryExist filepath
   stat <- getSymbolicLinkStatus filepath
   let isSymbLink = isSymbolicLink stat
-  if isSymbLink && isDir
-    then do
-    return True
-    else return False
+  return (isSymbLink && isDir)
 
 completePath :: FilePath -> IO [FilePath]
 completePath mainDir = do
