@@ -84,7 +84,7 @@ getSize filepath = do
 getSizeSum :: FilePath -> IO FileOffset
 getSizeSum filepath = do
   filesizes <- getSize filepath
-  return (sum filesizes)
+  return (foldr (+) 0 filesizes)
 
 listGreater :: FilePath -> IO [(FileOffset, FilePath)]
 listGreater filepath = do
