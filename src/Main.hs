@@ -9,6 +9,8 @@ import System.Environment (getArgs)
 import Data.List (sortBy)
 import Data.Function (on)
 
+type File = [[Char]]
+
 -- pure
 mySort :: Ord a => [(a, b)] -> [(a, b)]
 mySort = sortBy (flip compare `on` fst)
@@ -30,6 +32,13 @@ mix (x:xs) (y:ys) =  [x:y:[]] ++ mix xs ys
 twoInternalLst :: [[String]] -> [String]
 twoInternalLst [] = []
 twoInternalLst (x:xs) = [head x ++ " " ++  unwords (tail x)] ++ twoInternalLst xs
+
+checkEmpty :: [[Char]] -> Maybe [[Char]]
+checkEmpty [] = Nothing
+checkEmpty input = Just input
+
+toFilePath :: [String] -> FilePath
+toFilePath [string] = string :: FilePath
 
 -- impure
 getFileSize :: FilePath -> IO FileOffset
@@ -103,13 +112,18 @@ listGreater filepath = do
              return (mySort everyFile)
           else return [(filesize0, filepath)])
 
+usage :: IO ()
+usage = putStrLn "Usage: ./lg file|directory"
+
 main :: IO ()
 main = do
-  (filenam:_) <- getArgs
-  tupleall <- listGreater filenam
-  let lstsizes = offsetToString tupleall
-      lstnames = snd $ unzip tupleall
-      lstall = mix lstsizes lstnames
-      lstinternal = twoInternalLst lstall
-  mapM_ print lstinternal
-
+  filenam <- getArgs
+  if (checkEmpty filenam) == Nothing
+    then usage
+    else do
+     tupleall <- listGreater (toFilePath filenam)
+     let lstsizes = offsetToString tupleall
+         lstnames = snd $ unzip tupleall
+         lstall = mix lstsizes lstnames
+         lstinternal = twoInternalLst lstall
+     mapM_ print lstinternal

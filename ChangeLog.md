@@ -1,5 +1,15 @@
 # Revision history for lg
 
+## 0.2.6 -- 2020-10-13
+	* checkEmpty :: [[Char]] -> Maybe [[Char]]
+	Check if the user insert some input from the keyboard.
+	* toFilePath :: [String] -> FilePath
+	FilePath is a sinonymous of String, apply a simple transformation.
+	* usage :: IO ()
+	Return the usage form, a simple line.
+	* main :: IO ()
+	Include the checkEmpty logic.
+	
 ## 0.2.5 -- 2020-02-29
 	* ifDirAndSymbolicLink :: FilePath -> IO Bool
 	This function return `True` if is a `FilePath` directory and symbolic link.
