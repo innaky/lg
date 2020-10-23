@@ -9,8 +9,6 @@ import System.Environment (getArgs)
 import Data.List (sortBy)
 import Data.Function (on)
 
-type File = [[Char]]
-
 -- pure
 mySort :: Ord a => [(a, b)] -> [(a, b)]
 mySort = sortBy (flip compare `on` fst)
@@ -31,7 +29,7 @@ mix (x:xs) (y:ys) =  [x:y:[]] ++ mix xs ys
 
 twoInternalLst :: [[String]] -> [String]
 twoInternalLst [] = []
-twoInternalLst (x:xs) = [head x ++ " " ++  unwords (tail x)] ++ twoInternalLst xs
+twoInternalLst (x:xs) = [head x ++ "\t " ++  unwords (tail x)] ++ twoInternalLst xs
 
 checkEmpty :: [[Char]] -> Maybe [[Char]]
 checkEmpty [] = Nothing
@@ -39,6 +37,40 @@ checkEmpty input = Just input
 
 toFilePath :: [String] -> FilePath
 toFilePath [string] = string :: FilePath
+
+kilobyte :: Integral a => a -> a
+kilobyte bytes
+  | bytes <= 1024 = bytes
+  | otherwise = div bytes 1024
+
+megabyte :: Integral a => a -> a
+megabyte bytes
+  | bytes <= 1048576 = kilobyte bytes
+  | otherwise = div (kilobyte bytes) 1024
+
+gigabyte :: Integral a => a -> a
+gigabyte bytes
+  |  bytes <= 1073741824 = megabyte bytes
+  | otherwise = div (megabyte bytes) 1024
+
+kilobyteStr :: (Show a, Integral a) => a -> [Char]
+kilobyteStr bytes
+  | bytes <= 1024 = show bytes
+  | otherwise = show (kilobyte bytes) ++ "K"
+
+megabyteStr :: (Show a, Integral a) => a -> [Char]
+megabyteStr bytes
+  | bytes <= 1048576 = kilobyteStr bytes
+  | otherwise = show (megabyte bytes) ++ "M"
+
+gigabyteStr :: (Show a, Integral a) => a -> [Char]
+gigabyteStr bytes
+  | bytes <= 1073741824 = megabyteStr bytes
+  | otherwise = show (gigabyte bytes) ++ "G"
+
+togigabytes :: [FileOffset] -> [String]
+togigabytes [] = []
+togigabytes (x:xs) = gigabyteStr x : togigabytes xs
 
 -- impure
 getFileSize :: FilePath -> IO FileOffset
@@ -115,15 +147,43 @@ listGreater filepath = do
 usage :: IO ()
 usage = putStrLn "Usage: ./lg file|directory"
 
+help :: IO ()
+help = putStrLn "For help consult https://github.com/innaky"
+
+humanOutput :: [String] -> IO ()
+humanOutput filename = do
+  tupleall <- listGreater (toFilePath filename)
+  let lstOfsets = fmap first_t tupleall
+      lstHumanSizes = togigabytes lstOfsets
+      lstnames = snd $ unzip tupleall
+      lstall = mix lstHumanSizes lstnames
+      lstinternal = twoInternalLst lstall
+  mapM_ putStrLn lstinternal
+      
+bitsOutput :: [String] -> IO ()
+bitsOutput filename = do
+  tupleall <- listGreater (toFilePath filename)
+  let lstsizes = offsetToString tupleall
+      lstnames = snd $ unzip tupleall
+      lstall = mix lstsizes lstnames
+      lstinternal = twoInternalLst lstall
+  mapM_ putStrLn lstinternal
+
+checkParameters :: [String] -> IO ()
+checkParameters list =
+  case (length list) of
+    1 -> humanOutput list
+    2 -> options list
+
+options :: [String] -> IO ()
+options list =
+  case (head list) of
+    "-h" -> help
+    "-b" -> bitsOutput list
+
 main :: IO ()
 main = do
-  filenam <- getArgs
-  if (checkEmpty filenam) == Nothing
-    then usage
-    else do
-     tupleall <- listGreater (toFilePath filenam)
-     let lstsizes = offsetToString tupleall
-         lstnames = snd $ unzip tupleall
-         lstall = mix lstsizes lstnames
-         lstinternal = twoInternalLst lstall
-     mapM_ print lstinternal
+  filename <- getArgs
+  case (checkEmpty filename) of
+    Nothing -> usage
+    Just _ -> checkParameters filename
