@@ -1,5 +1,6 @@
 module Main where
 
+import Lib
 import System.Posix.Types (FileOffset)
 import System.Posix.Files (getSymbolicLinkStatus, fileSize, isSymbolicLink)
 import System.Directory (doesDirectoryExist, listDirectory, doesFileExist)
@@ -145,10 +146,28 @@ listGreater filepath = do
           else return [(filesize0, filepath)])
 
 usage :: IO ()
-usage = putStrLn "Usage: ./lg file|directory"
+usage = putStrLn "LG(1)\n\n\
+\NAME\n\                                                                                                                                              
+\\tlg - list greather files\n\n\
+\SYNOPSIS\n\
+\\tlg [OPTION] File|Directory\n\n\
+\DESCRIPTION\n\                                                                                                                                      
+\\tList the filesizes of a directory sorted from higher to small, the value of sizes is zero.\n\n\                                                      
+\\t-h\n\t    return this text.\n\n\                                                                                                                            
+\\t-b\n\t    return the filesizes in bytesizes format of a directory sorted from higher to small.\n\n\                                                            
+\AUTHOR\n\                                                                                                                                            
+\\tWrite by Inna Petrova and Erbeth Charte.\n\n\                                                                                                         
+\REPORTING BUGS\n\                                                                                                                                    
+\\tIssues in https://github.com/innaky\n\n\
+\\tReport: <innaky@protonmail.com (Inna Petrova), echarte@tutanota.com (Erbeth Charte)>\n\n\
+\COPYRIGHT\n\                                                                                                                                         
+\\tCopyright (R) 2020. License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.\n\n\                                            
+\For extended help consult https://github.com/innaky"
 
-help :: IO ()
-help = putStrLn "For help consult https://github.com/innaky"
+synopsis :: IO ()
+synopsis = putStrLn "SYNOPSIS\n\
+\\tlg [ -h | --help | -b ] File|Directory \n\
+\\tFor more information lg --help"
 
 humanOutput :: [String] -> IO ()
 humanOutput filename = do
@@ -159,7 +178,7 @@ humanOutput filename = do
       lstall = mix lstHumanSizes lstnames
       lstinternal = twoInternalLst lstall
   mapM_ putStrLn lstinternal
-      
+
 bitsOutput :: [String] -> IO ()
 bitsOutput filename = do
   tupleall <- listGreater (toFilePath filename)
@@ -178,12 +197,18 @@ checkParameters list =
 options :: [String] -> IO ()
 options list =
   case (head list) of
-    "-h" -> help
-    "-b" -> bitsOutput list
+    "-b" -> bitsOutput (tail list)
 
 main :: IO ()
 main = do
   filename <- getArgs
   case (checkEmpty filename) of
     Nothing -> usage
+    Just ["-h"] -> synopsis
+    Just ["-h", _] -> synopsis
+    Just [_, "-h"] -> synopsis
+    Just ["-b"] -> synopsis
+    Just ["--help"] -> usage
+    Just [_, "--help"] -> usage
+    Just ["--help", _] -> usage
     Just _ -> checkParameters filename
