@@ -1,5 +1,20 @@
 # Revision history for lg
 
+## 0.2.8 -- 2020-10-26
+	* usage :: IO ()
+	New format, using putStr and unlines
+	* synopsis :: IO ()
+	New format with putStr and unlines
+	* humanOut :: String -> IO ()
+	humanOutput :: [String] -> IO () to humanOut :: String -> IO ()
+	* bitsOut :: String -> IO ()
+	bitsOutput [String] -> IO () to bitsOut :: String -> IO ()
+	* fileExist :: FilePath -> IO Bool
+	Return True if the file exist, else return False.
+	* Main :: IO ()
+	More idiomatic form, and using System.Exit
+	* LamdaCase, using the ghc extension LambdaCase.
+	
 ## 0.2.7 -- 2020-10-22
         * kilobyte, megabyte and gigabyte: Pure functions for calculate bits magnitudes.
 	* kilobyteStr, megabyteStr and gigabyteStr: Transform the output to a string (valid for shell output).
