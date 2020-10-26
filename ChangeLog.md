@@ -1,5 +1,15 @@
 # Revision history for lg
 
+## 0.2.7 -- 2020-10-22
+        * kilobyte, megabyte and gigabyte: Pure functions for calculate bits magnitudes.
+	* kilobyteStr, megabyteStr and gigabyteStr: Transform the output to a string (valid for shell output).
+	* humanOutput: Set the bits outputs to more readable form. (sorted).
+	* bitsOutput: Base sorted output.
+	* checkParameters: segmented part of main, this function check the user input.
+	* usage: Return a man form, with all information.
+	* synopsis: Small help, this function reference usage.
+	* main: Parsing some options for generate computations.
+
 ## 0.2.6 -- 2020-10-13
 	* checkEmpty :: [[Char]] -> Maybe [[Char]]
 	Check if the user insert some input from the keyboard.
