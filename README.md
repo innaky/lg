@@ -12,24 +12,24 @@ Return a filename and the size:
 
 ```bash
 > lg /home/live/src/haskell-misc/
-"76187 /home/live/src/haskell-misc/.git"
-"20779 /home/live/src/haskell-misc/learn-you-a-haskell"
-"1063 /home/live/src/haskell-misc/LICENSE"
-"617 /home/live/src/haskell-misc/README.md"
+106K     /home/live/src/haskell-misc/.git
+23K      /home/live/src/haskell-misc/learn-you-a-haskell
+1K       /home/live/src/haskell-misc/LICENSE
+617      /home/live/src/haskell-misc/README.md
 ```
 
 ### __lg__ of a __file__
 
 ```bash
 > lg /home/live/src/haskell-misc/README.md
-"617 /home/live/src/haskell-misc/README.md"
+617      /home/live/src/haskell-misc/README.md
 ```
 
 ### Shell pipes
 ```bash
 lg /home/live/src/haskell-misc/ | head -n 2
-"76187 /home/live/src/haskell-misc/.git"
-"20779 /home/live/src/haskell-misc/learn-you-a-haskell"
+106K     /home/live/src/haskell-misc/.git
+23K      /home/live/src/haskell-misc/learn-you-a-haskell
 ```
 
 ### Symbolic link management (Example)
@@ -64,12 +64,12 @@ lrwxrwxrwx 1 live live   37 feb 29 21:48 MyFileLink -> /home/live/src/haskell-mi
 
 # Testing "List greater" binary (lg)
 > lg .
-"76187 ./.git"
-"20779 ./learn-you-a-haskell"
-"1063 ./LICENSE"
-"617 ./README.md"
-"37 ./MyFileLink"
-"0 ./DirHomeLink"
+106K     /home/live/src/haskell-misc/.git
+23K      /home/live/src/haskell-misc/learn-you-a-haskell
+1K       /home/live/src/haskell-misc/LICENSE
+617      /home/live/src/haskell-misc/README.md
+8        /home/live/src/haskell-misc/MyFileLink
+0        /home/live/src/haskell-misc/DirHomeLink
 ```
 
 for :
