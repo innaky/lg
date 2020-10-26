@@ -3,15 +3,15 @@ cabal-version:       >=1.10
 -- further documentation, see http://haskell.org/cabal/users-guide/
 
 name:                lg
-version:             0.2.6
+version:             0.2.7
 synopsis:            List greater files.
-description:         Unix-like binary command, for list the greater files in a directory in byte format.
+description:         Unix-like binary command, for list the greater files.
 homepage:            https://github.com/innaky/lg
 -- bug-reports:
 license:             GPL-3
 license-file:        LICENSE
-author:              Innaky
-maintainer:          innaky@protonmail.com
+author:              Innaky, Echarte
+maintainer:          innaky@protonmail.com, echarte@tutanota.com
 -- copyright:
 -- category:
 build-type:          Simple
