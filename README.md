@@ -1,3 +1,8 @@
+# idiomas/idioms
+
+* [English](https://github.com/innaky/lg#lg-free-unix-like-binary-command)
+* [Español](https://github.com/innaky/lg#lg-comando-linuxunix-like)
+
 # lg (Comando Linux/Unix-like)
 Lista los archivos por tamaños de mayor a menor. 
 
