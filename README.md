@@ -1,3 +1,102 @@
+# lg (Comando Linux/Unix-like)
+Lista los archivos por tamaños de mayor a menor. 
+
+El tamaño de los directorios es equivalente a la cantidad de información que contengan recursivamente.
+
+El tamaño de los directorios vacíos es cero.
+
+## Motivación
+En trabajos con servidores (GNU/Linux, BSD), ocasionalmente tenía que buscar los directorios o archivos de mayor tamaño, para respaldo u otra actividad.
+Usualmente con unos pocos comandos es fácil resolverle.
+
+Pero ¿Si tienes muchísimos directorios con un gran árbol de subdirectorios, con muchos archivos? (ejemplo colapso de disco por mal empleo de logs)
+
+Pues con algunas tuberías asunto resuelto...
+
+Pero quería programar un binario en Haskell para mis amistades, así que tomé este problema,
+el binario lo ejecutas llamando a un directorio y obtienes los archivos o directorios de mayor tamaño a un nivel de profundidad, sin embargo, 
+la sumatoria es recursiva, es decir, revisa todo el árbol de subdirectorios.
+
+## Construcción e instalación
+
+* [Instalar stack](https://docs.haskellstack.org/en/stable/install_and_upgrade/)
+* Descargar el repositorio:
+```
+git clone https://github.com/innaky/lg
+```
+* Construcción:
+```
+cd lg
+stack build
+```
+
+Tomas el binario que se encuentra bajo el directorio *.stack-work/dist/x86_64-linux-tinfo6/Cabal-3.0.1.0/build/lg* 
+```
+chmod 755 lg
+mv lg /usr/local/bin
+```
+
+Listo, con estos pasos lo tendrás disponible en el sistema.
+
+## Uso
+
+* Ayuda:
+
+**lg [-h | --help]**
+
+* Ejecución:
+
+**lg [-b] archivo | directorio**
+
+Por defecto está en formato de fácil lectura (Kilobytes, Megabytes etc), con el parámetro *-b* al inicio, la salida es en bytes.
+
+## Ejemplos
+
+* Salida con lectura agradable (lg directorio)
+```bash
+> lg /home/live/src/haskell-misc/
+106K     /home/live/src/haskell-misc/.git
+23K      /home/live/src/haskell-misc/learn-you-a-haskell
+1K       /home/live/src/haskell-misc/LICENSE
+617      /home/live/src/haskell-misc/README.md
+```
+
+* Salida en bits (lg -b directorio)
+```bash
+> lg -b /home/live/src/haskell-misc/
+108837   /home/live/src/haskell-misc/.git
+24372    /home/live/src/haskell-misc/learn-you-a-haskell
+1063     /home/live/src/haskell-misc/LICENSE
+617      /home/live/src/haskell-misc/README.md`
+```
+
+* Salida agradable de archivo (lg /ruta/archivo):
+```bash
+> lg /home/live/ISOS/test.iso
+516M     /home/live/ISOS/test.iso
+```
+
+* Salida en bytes para archivos (lg -b /ruta/archivo):
+```bash
+> lg -b /home/live/ISOS/test.iso
+541065216        /home/live/ISOS/test.iso
+```
+
+* ayuda (lg -h):
+```
+SYNOPSIS
+    lg [-h | --help ]
+    lg [-b] Filename | Directory
+
+    For more information lg --help
+```
+
+* Para ayuda detallada usar (lg --help)
+
+## Escalabilidad
+Ya desde esta versión (gracias a @echarte) es fácil escalar el binario, agregando una módulo en */src* e importandole en */app/Main.hs*, 
+sólo debes agregar el parámetro en la función *main :: IO ()*
+
 # lg (Free Unix-like binary command)
 List greater files
 
