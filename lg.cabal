@@ -14,7 +14,7 @@ bug-reports:    https://github.com/innaky/lg/issues
 author:         Inna Petrova, Erbeth Charte
 maintainer:     innaky@protonmail.com, echarte@tutanota.com
 copyright:      2020 Inna Petrova and Erbeth Charte
-license:        GPLv3
+license:        GPL-3
 license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
