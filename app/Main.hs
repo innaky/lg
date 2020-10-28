@@ -32,47 +32,6 @@ twoInternalLst :: [[String]] -> [String]
 twoInternalLst [] = []
 twoInternalLst (x:xs) = [head x ++ "\t " ++  unwords (tail x)] ++ twoInternalLst xs
 
-checkEmpty :: [[Char]] -> Maybe [[Char]]
-checkEmpty [] = Nothing
-checkEmpty input = Just input
-
---toFilePath :: [String] -> FilePath
---toFilePath [string] = string :: FilePath
-
-kilobyte :: Integral a => a -> a
-kilobyte bytes
-  | bytes <= 1024 = bytes
-  | otherwise = div bytes 1024
-
-megabyte :: Integral a => a -> a
-megabyte bytes
-  | bytes <= 1048576 = kilobyte bytes
-  | otherwise = div (kilobyte bytes) 1024
-
-gigabyte :: Integral a => a -> a
-gigabyte bytes
-  |  bytes <= 1073741824 = megabyte bytes
-  | otherwise = div (megabyte bytes) 1024
-
-kilobyteStr :: (Show a, Integral a) => a -> [Char]
-kilobyteStr bytes
-  | bytes <= 1024 = show bytes
-  | otherwise = show (kilobyte bytes) ++ "K"
-
-megabyteStr :: (Show a, Integral a) => a -> [Char]
-megabyteStr bytes
-  | bytes <= 1048576 = kilobyteStr bytes
-  | otherwise = show (megabyte bytes) ++ "M"
-
-gigabyteStr :: (Show a, Integral a) => a -> [Char]
-gigabyteStr bytes
-  | bytes <= 1073741824 = megabyteStr bytes
-  | otherwise = show (gigabyte bytes) ++ "G"
-
-togigabytes :: [FileOffset] -> [String]
-togigabytes [] = []
-togigabytes (x:xs) = gigabyteStr x : togigabytes xs
-
 -- impure
 getFileSize :: FilePath -> IO FileOffset
 getFileSize filepath = do
