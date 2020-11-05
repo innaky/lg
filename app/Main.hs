@@ -117,11 +117,14 @@ usage = putStr . unlines $
   ,"DESCRIPTION"
   ,"    List the files ordered by size from largest to smallest."
   ,""
-  ,"    -h"
+  ,"    -h | --help"
   ,"        Return this text."
   ,""
   ,"    -b"
   ,"        Return the file sizes in bytes format of a directory sorted from higher to small."
+  ,""
+  ,"    -v | --version"
+  ,"        Show version."
   ,""
   ,"AUTHOR"
   ,"    Write by Inna Petrova and Erbeth Charte."
@@ -142,6 +145,7 @@ synopsis = putStr . unlines $
   [ "SYNOPSIS"
   , "    lg [-h | --help ]"
   , "    lg [-b] Filename | Directory"
+  , "    lg [-v | --version ]"
   , ""
   , "    For more information lg --help"
   ]
@@ -165,6 +169,10 @@ bitsOut filename = do
       lstinternal = twoInternalLst lstall
   mapM_ putStrLn lstinternal
 
+version :: IO ()
+version = putStr . unlines $
+  [ "list greater files 0.2.8" ]
+
 fileExist :: FilePath -> IO Bool
 fileExist f = do
   file <- doesFileExist f
@@ -181,6 +189,8 @@ main = getArgs >>= \case
   [] -> synopsis >> exitWith (ExitFailure 1)
   ["-h"] -> synopsis >> exitWith (ExitFailure 1)
   ["--help"] -> usage >> exitWith (ExitFailure 1)
+  ["-v"] -> version >> exitWith (ExitFailure 1)
+  ["--version"] -> version >> exitWith (ExitFailure 1)
   ["-b", path] -> bitsOut path
   [path] -> fileExist path >>= \case
     True -> humanOut path
